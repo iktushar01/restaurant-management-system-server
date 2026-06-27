@@ -6,6 +6,8 @@ export const createDineTableZodSchema = z.object({
     tableNo: z.string().min(1),
     capacity: z.coerce.number().int().min(1),
     status: z.nativeEnum(DineTableStatus).optional().default(DineTableStatus.AVAILABLE),
+    positionX: z.number().int().nullable().optional(),
+    positionY: z.number().int().nullable().optional(),
 });
 
 export const updateDineTableZodSchema = createDineTableZodSchema.partial();

@@ -66,7 +66,14 @@ const createDineLocation = async (payload: { name: string; type?: string }) =>
 
 const updateDineLocation = async (
     id: string,
-    payload: { name?: string; type?: string },
+    payload: {
+        name?: string;
+        type?: string;
+        positionX?: number | null;
+        positionY?: number | null;
+        width?: number | null;
+        height?: number | null;
+    },
 ) => {
     await getDineLocationById(id);
     return prisma.dineLocation.update({ where: { id }, data: payload });

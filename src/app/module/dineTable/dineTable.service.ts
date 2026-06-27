@@ -29,6 +29,8 @@ const formatTable = (table: {
     tableNo: string;
     capacity: number;
     status: DineTableStatus;
+    positionX?: number | null;
+    positionY?: number | null;
     location?: { name: string };
 }) => ({
     id: table.id,
@@ -38,6 +40,8 @@ const formatTable = (table: {
     capacity: table.capacity,
     status: formatStatus(table.status),
     statusRaw: table.status,
+    positionX: table.positionX ?? null,
+    positionY: table.positionY ?? null,
 });
 
 const listDineTables = async (query: IListDineTables) => {
@@ -136,6 +140,8 @@ const updateDineTable = async (
         tableNo: string;
         capacity: number;
         status: DineTableStatus;
+        positionX: number | null;
+        positionY: number | null;
     }>,
 ) => {
     await getDineTableById(id);

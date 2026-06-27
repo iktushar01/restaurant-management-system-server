@@ -16,6 +16,7 @@ import { HrRoute } from "../module/hr/hr.route";
 import { BankRoute } from "../module/bank/bank.route";
 import { DueRoute } from "../module/due/due.route";
 import { ReportRoute } from "../module/report/report.route";
+import { FloorPlanRoute } from "../module/floorPlan/floorPlan.route";
 
 const router = express.Router();
 
@@ -26,6 +27,7 @@ router.use("/foods", FoodRoute);
 router.use("/property", PropertyRoute);
 router.use("/dine-locations", DineLocationRoute);
 router.use("/dine-tables", DineTableRoute);
+router.use("/dine/floor-plan", FloorPlanRoute);
 router.use("/waiters", WaiterRoute);
 router.use("/work-periods", WorkPeriodRoute);
 router.use("/orders", OrderRoute);

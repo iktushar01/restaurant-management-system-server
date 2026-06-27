@@ -3,6 +3,10 @@ import { z } from "zod";
 export const createDineLocationZodSchema = z.object({
     name: z.string().min(2),
     type: z.string().optional(),
+    positionX: z.number().int().nullable().optional(),
+    positionY: z.number().int().nullable().optional(),
+    width: z.number().int().min(100).nullable().optional(),
+    height: z.number().int().min(80).nullable().optional(),
 });
 
 export const updateDineLocationZodSchema = createDineLocationZodSchema.partial();
