@@ -4,6 +4,12 @@ import { UserRoutes } from "../module/user/user.route";
 import { FoodCategoryRoute } from "../module/foodCategory/foodCategory.route";
 import { FoodRoute } from "../module/food/food.route";
 import { PropertyRoute } from "../module/property/property.route";
+import { DineLocationRoute } from "../module/dineLocation/dineLocation.route";
+import { DineTableRoute } from "../module/dineTable/dineTable.route";
+import { WaiterRoute } from "../module/waiter/waiter.route";
+import { WorkPeriodRoute } from "../module/workPeriod/workPeriod.route";
+import { OrderRoute } from "../module/order/order.route";
+import { DashboardRoute } from "../module/dashboard/dashboard.route";
 
 const router = express.Router();
 
@@ -12,6 +18,11 @@ router.use("/users", UserRoutes);
 router.use("/food-categories", FoodCategoryRoute);
 router.use("/foods", FoodRoute);
 router.use("/property", PropertyRoute);
-
+router.use("/dine-locations", DineLocationRoute);
+router.use("/dine-tables", DineTableRoute);
+router.use("/waiters", WaiterRoute);
+router.use("/work-periods", WorkPeriodRoute);
+router.use("/orders", OrderRoute);
+router.use("/dashboard", DashboardRoute);
 
 export const IndexRoute = router;

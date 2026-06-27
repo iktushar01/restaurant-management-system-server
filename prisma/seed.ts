@@ -1,4 +1,4 @@
-import { PrismaClient, Availability } from "../src/generated/prisma/index";
+import { PrismaClient, Availability, DineTableStatus } from "../src/generated/prisma/index";
 import { PrismaPg } from "@prisma/adapter-pg";
 import dotenv from "dotenv";
 
@@ -71,6 +71,72 @@ async function main() {
     });
 
     console.log("Restaurant seed data created successfully.");
+    await seedDineAndWaiters();
+}
+
+async function seedDineAndWaiters() {
+    const existing = await prisma.dineLocation.count();
+    if (existing > 0) {
+        console.log("Dine/waiter seed skipped — already exists.");
+        return;
+    }
+
+    const central = await prisma.dineLocation.create({
+        data: { name: "Central", type: "Indoor" },
+    });
+    const terrace = await prisma.dineLocation.create({
+        data: { name: "Terrace", type: "Outdoor" },
+    });
+    const bar = await prisma.dineLocation.create({
+        data: { name: "Bar Area", type: "Bar" },
+    });
+    const privateRoom = await prisma.dineLocation.create({
+        data: { name: "Private Room", type: "Private" },
+    });
+
+    const centralTables = [
+        { tableNo: "KABIN 1", capacity: 4 },
+        { tableNo: "A2", capacity: 8 },
+        { tableNo: "A3", capacity: 8 },
+        { tableNo: "A4", capacity: 8 },
+        { tableNo: "B1", capacity: 4 },
+        { tableNo: "B2", capacity: 4 },
+        { tableNo: "C1", capacity: 4 },
+        { tableNo: "C2", capacity: 4 },
+    ];
+
+    await prisma.dineTable.createMany({
+        data: centralTables.map((t) => ({
+            ...t,
+            locationId: central.id,
+            status: DineTableStatus.AVAILABLE,
+        })),
+    });
+
+    await prisma.dineTable.createMany({
+        data: [
+            { locationId: terrace.id, tableNo: "T1", capacity: 6, status: DineTableStatus.OCCUPIED },
+            { locationId: terrace.id, tableNo: "T2", capacity: 4, status: DineTableStatus.AVAILABLE },
+            { locationId: bar.id, tableNo: "BAR1", capacity: 2, status: DineTableStatus.AVAILABLE },
+            { locationId: bar.id, tableNo: "BAR2", capacity: 2, status: DineTableStatus.RESERVED },
+            { locationId: privateRoom.id, tableNo: "PR1", capacity: 10, status: DineTableStatus.AVAILABLE },
+        ],
+    });
+
+    await prisma.waiter.createMany({
+        data: [
+            { name: "Shawan", note: "" },
+            { name: "Robiul", note: "" },
+            { name: "ADMIN", note: "" },
+            { name: "Payel", note: "" },
+        ],
+    });
+
+    await prisma.workPeriod.create({
+        data: { startDate: new Date(), openingCash: 0 },
+    });
+
+    console.log("Dine locations, tables, waiters, and work period seeded.");
 }
 
 main()
