@@ -17,6 +17,7 @@ import { BankRoute } from "../module/bank/bank.route";
 import { DueRoute } from "../module/due/due.route";
 import { ReportRoute } from "../module/report/report.route";
 import { FloorPlanRoute } from "../module/floorPlan/floorPlan.route";
+import { CurrencyRoute } from "../module/currency/currency.route";
 
 const router = express.Router();
 
@@ -34,6 +35,7 @@ router.use("/orders", OrderRoute);
 router.use("/dashboard", DashboardRoute);
 router.use("/inventory", InventoryRoute);
 router.use("/finance", FinanceRoute);
+router.use("/currencies", CurrencyRoute);
 router.use("/hr", HrRoute);
 router.use("/bank", BankRoute);
 router.use("/due", DueRoute);
