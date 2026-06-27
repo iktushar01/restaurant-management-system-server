@@ -116,12 +116,16 @@ Copy the rest from your local `.env` (secrets, email, Cloudinary, etc.).
 
 | Setting | Value |
 |---------|--------|
-| **Root Directory** | *(leave empty)* |
+| **Root Directory** | *(leave completely empty)* |
 | **Build Command** | `npm install` |
 | **Pre-Deploy Command** | `npm run db:deploy` |
 | **Start Command** | `npm start` |
 
-Do **not** use `node src/server.ts` as the start command.
+Do **not** use:
+- `npm install && npx prisma migrate deploy` as Build Command (migrations belong in Pre-Deploy)
+- `node src/server.ts` as Start Command
+
+**You must add `DATABASE_URL` in Environment before deploy.** Without it, Pre-Deploy migrations and the running app will fail.
 
 ### Step 4 — Redeploy
 
