@@ -10,7 +10,6 @@ import AppError from "../../errorHelpers/AppError";
 import { IRequestUser } from "./auth.interface";
 import { AuthService } from "./auth.service";
 import { getDemoUsersForClient } from "../../constants/demoUsers";
-import ms, { StringValue } from "ms";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -23,13 +22,6 @@ const setAuthCookies = (
     tokenUtils.getRefreshTokenFromCookie(res, tokens.refreshToken);
     if (tokens.sessionToken) {
         tokenUtils.getBetterAuthAccessToken(res, tokens.sessionToken);
-        res.cookie("better-auth.session_token", tokens.sessionToken, {
-            httpOnly: true,
-            secure: envVars.NODE_ENV === "production",
-            sameSite: "lax",
-            path: "/",
-            maxAge: ms(envVars.BETTER_AUTH_SESSION_TOKEN_EXPIRES_IN as StringValue),
-        });
     }
 };
 
@@ -132,7 +124,9 @@ const updateProfile = catchAsync(async (req: Request, res: Response) => {
 // ─── Refresh Tokens ───────────────────────────────────────────────────────────
 
 const getNewTokens = catchAsync(async (req: Request, res: Response) => {
-    const oldRefreshToken = req.cookies.refreshToken;
+    const oldRefreshToken =
+        req.cookies.refreshToken ||
+        (req.body?.refreshToken as string | undefined);
     const sessionToken = req.cookies["better-auth.session_token"];
 
     if (!oldRefreshToken) {

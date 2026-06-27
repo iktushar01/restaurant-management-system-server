@@ -14,8 +14,16 @@ const app: Application = express();
 app.set("view engine", "ejs");
 app.set("views", templatesDir);
 
+const corsOrigins = [
+    ...envVars.FRONTEND_URL.split(",").map((origin) => origin.trim()),
+    envVars.BETTER_AUTH_URL,
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://localhost:5000",
+].filter(Boolean);
+
 const corsOptions = {
-    origin: [envVars.FRONTEND_URL, envVars.BETTER_AUTH_URL, "http://localhost:3000", "http://localhost:5173", "http://localhost:5000"],
+    origin: corsOrigins,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],

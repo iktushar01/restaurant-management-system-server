@@ -141,7 +141,11 @@ export const auth = betterAuth({
         signIn : `${envVars.BETTER_AUTH_URL}/api/v1/auth/google/success`,
     },
 
-    trustedOrigins: [process.env.BETTER_AUTH_URL || "http://localhost:5000", envVars.FRONTEND_URL, "http://localhost:5173"],
+    trustedOrigins: [
+        process.env.BETTER_AUTH_URL || "http://localhost:5000",
+        ...envVars.FRONTEND_URL.split(",").map((origin) => origin.trim()),
+        "http://localhost:5173",
+    ],
 
     advanced: {
         // disableCSRFCheck: true,

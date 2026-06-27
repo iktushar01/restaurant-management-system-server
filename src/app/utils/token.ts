@@ -56,7 +56,7 @@ const getRefreshTokenFromCookie = (res: Response, token: string) => {
 }
 
 const getBetterAuthAccessToken = (res: Response, token: string) => {
-    const maxAge = ms(envVars.ACCESS_TOKEN_EXPIRES_IN as StringValue);
+    const maxAge = ms(envVars.BETTER_AUTH_SESSION_TOKEN_EXPIRES_IN as StringValue);
     const isProd = envVars.NODE_ENV === "production";
     cookieUtils.setCookie(res, 'better-auth.session_token', token, {
         httpOnly: true,
