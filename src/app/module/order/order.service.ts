@@ -46,6 +46,7 @@ const formatOrderStatus = (status: OrderStatus) => {
 
 const formatOrder = (order: {
     id: string;
+    tableId?: string | null;
     orderType: OrderType;
     status: OrderStatus;
     total: { toString: () => string };
@@ -58,6 +59,7 @@ const formatOrder = (order: {
 }) => ({
     id: order.id,
     orderId: order.id.slice(0, 8).toUpperCase(),
+    tableId: order.tableId ?? null,
     table: order.table?.tableNo ?? "Takeaway",
     status: formatOrderStatus(order.status),
     statusRaw: order.status,
