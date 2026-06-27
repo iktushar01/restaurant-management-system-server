@@ -25,7 +25,18 @@ const getSeatLayout = catchAsync(async (_req: Request, res: Response) => {
     });
 });
 
+const getDashboardStats = catchAsync(async (_req: Request, res: Response) => {
+    const result = await DashboardService.getDashboardStats();
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Dashboard stats fetched successfully",
+        data: result,
+    });
+});
+
 export const DashboardController = {
     getCurrentOrders,
     getSeatLayout,
+    getDashboardStats,
 };
