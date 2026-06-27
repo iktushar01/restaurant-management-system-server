@@ -1,4 +1,4 @@
-import app from "./app";
+import app from "./expressApp";
 import { envVars } from "./config/env";
 import { seedDemoUsers } from "./app/utils/seedDemoUsers";
 

@@ -4,6 +4,7 @@ import AppError from "../errorHelpers/AppError";
 import { StatusCodes } from "http-status-codes";
 import path from "node:path";
 import ejs from "ejs";
+import { templatesDir } from "./appPaths";
 
 
 export const transporter = nodemailer.createTransport({
@@ -31,7 +32,7 @@ interface EmailOptions {
 
 export const sendEmail = async ({ subject, to, templateName, templateData, attachments }: EmailOptions) => {
     try {
-        const templatePath = path.resolve(process.cwd(), `src/app/templates/${templateName}.ejs`);
+        const templatePath = path.join(templatesDir, `${templateName}.ejs`);
         const html = await ejs.renderFile(templatePath, templateData);
         const info = await transporter.sendMail({
             from: `" Acadex" <${envVars.EMAIL_USER}>`,
