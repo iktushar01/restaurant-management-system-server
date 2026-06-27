@@ -158,7 +158,7 @@ export const moveStock = catchAsync(async (req, res) => {
     ok(res, null, "Stock moved");
 });
 export const listStockByLocation = catchAsync(async (req, res) => {
-    ok(res, await InventoryService.listStockByLocation(req.query.locationId as string | undefined), "Stock fetched");
+    ok(res, await InventoryService.listStockByLocation(req.query as { locationId?: string; itemId?: string }), "Stock fetched");
 });
 
 // Purchases

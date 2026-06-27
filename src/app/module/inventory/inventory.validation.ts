@@ -7,6 +7,11 @@ export const listQuerySchema = z.object({
     limit: z.coerce.number().int().min(1).max(100).optional().default(10),
 });
 
+export const listStockQuerySchema = z.object({
+    locationId: z.string().uuid().optional(),
+    itemId: z.string().uuid().optional(),
+});
+
 export const listSubCategoriesQuerySchema = listQuerySchema.extend({
     categoryId: z.string().uuid().optional(),
 });

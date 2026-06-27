@@ -17,6 +17,7 @@ import {
     listEventsQuerySchema,
     listQuerySchema,
     listSubCategoriesQuerySchema,
+    listStockQuerySchema,
     moveStockSchema,
     stockInSchema,
     stockOutSchema,
@@ -79,7 +80,7 @@ router.patch("/items/:id", auth, v(idParamSchema, "params"), v(createInventoryIt
 router.delete("/items/:id", auth, v(idParamSchema, "params"), C.deleteItem);
 
 // Stock operations
-router.get("/stock", auth, C.listStockByLocation);
+router.get("/stock", auth, v(listStockQuerySchema, "query"), C.listStockByLocation);
 router.post("/stock/in", auth, v(stockInSchema), C.stockIn);
 router.post("/stock/out", auth, v(stockOutSchema), C.stockOut);
 router.post("/stock/move", auth, v(moveStockSchema), C.moveStock);

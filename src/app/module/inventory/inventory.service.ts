@@ -462,6 +462,7 @@ const formatEvent = (e: {
     description: e.description ?? "",
     status: e.status === EventStatus.BOOKED ? "Booked" : e.status === EventStatus.RESOLVED ? "Resolved" : e.status === EventStatus.CONFIRMED ? "Confirmed" : "Cancelled",
     statusRaw: e.status,
+    dateISO: e.date.toISOString(),
 });
 
 const listEvents = async (query: { search?: string; status?: EventStatus; page?: number; limit?: number }) => {
