@@ -86,24 +86,48 @@ npm run start
 
 ## Deploy on Render
 
-1. **Root Directory**: leave empty (use the repo root). Do **not** set it to `src`, or paths will break (`src/src/...`).
+### Step 1 — PostgreSQL
 
-2. **Build Command**:
-   ```bash
-   npm install && npx prisma migrate deploy
-   ```
+Create a **PostgreSQL** database on Render (or use Neon). Copy the **External Database URL**.
 
-3. **Start Command**:
-   ```bash
-   npm start
-   ```
-   Do **not** use `node src/server.ts` — Node cannot run TypeScript directly.
+### Step 2 — Environment variables
 
-4. Add all environment variables from `.env` in the Render dashboard (`DATABASE_URL`, `BETTER_AUTH_SECRET`, etc.).
+In your Web Service → **Environment**, add **every** variable from `.env.example`.  
+**`DATABASE_URL` is required** — without it, `prisma migrate deploy` fails with:
 
-5. Set `NODE_ENV=production`.
+`The datasource.url property is required in your Prisma config file`
 
-> **Note:** `src/app.ts` was renamed to `src/expressApp.ts` to avoid a naming conflict with the `src/app/` folder, which caused `ERR_UNSUPPORTED_DIR_IMPORT` under Node ESM.
+Minimum production values:
+
+| Variable | Example |
+|----------|---------|
+| `DATABASE_URL` | `postgresql://...` (from Render Postgres or Neon) |
+| `NODE_ENV` | `production` |
+| `BETTER_AUTH_URL` | `https://restaurant-management-system-server-2ns0.onrender.com` |
+| `FRONTEND_URL` | Your Vercel client URL (not `localhost:5173`) |
+| `BETTER_AUTH_SECRET` | Long random string |
+| `ACCESS_TOKEN_SECRET` | Long random string |
+| `REFRESH_TOKEN_SECRET` | Long random string |
+| … | All other vars from `.env.example` |
+
+Copy the rest from your local `.env` (secrets, email, Cloudinary, etc.).
+
+### Step 3 — Render service settings
+
+| Setting | Value |
+|---------|--------|
+| **Root Directory** | *(leave empty)* |
+| **Build Command** | `npm install` |
+| **Pre-Deploy Command** | `npm run db:deploy` |
+| **Start Command** | `npm start` |
+
+Do **not** use `node src/server.ts` as the start command.
+
+### Step 4 — Redeploy
+
+Save environment variables, then trigger **Manual Deploy**. Migrations run in Pre-Deploy; the app starts with `tsx src/server.ts`.
+
+> **Note:** `src/app.ts` was renamed to `src/expressApp.ts` to avoid a naming conflict with the `src/app/` folder (`ERR_UNSUPPORTED_DIR_IMPORT`).
 
 ## API Modules
 

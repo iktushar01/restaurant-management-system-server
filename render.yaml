@@ -1,9 +1,10 @@
 services:
   - type: web
-    name: dineflow-api
+    name: restaurant-management-system-server
     runtime: node
     plan: free
-    buildCommand: npm install && npx prisma migrate deploy
+    buildCommand: npm install
+    preDeployCommand: npm run db:deploy
     startCommand: npm start
     envVars:
       - key: NODE_ENV
