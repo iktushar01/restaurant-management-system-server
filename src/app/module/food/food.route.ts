@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { ALL_ROLES } from "../../constants/roles";
+import { SETTINGS_ROLES } from "../../constants/roles";
 import { checkAuth } from "../../middleware/checkAuth";
 import { validateRequest } from "../../middleware/validateRequest";
 import { FoodController } from "./food.controller";
@@ -14,30 +14,30 @@ const router = Router();
 
 router.get(
     "/",
-    checkAuth(...ALL_ROLES),
+    checkAuth(...SETTINGS_ROLES),
     validateRequest(listFoodQuerySchema, "query"),
     FoodController.listFoods,
 );
 
-router.get("/all", checkAuth(...ALL_ROLES), FoodController.getAllFoods);
+router.get("/all", checkAuth(...SETTINGS_ROLES), FoodController.getAllFoods);
 
 router.get(
     "/:id",
-    checkAuth(...ALL_ROLES),
+    checkAuth(...SETTINGS_ROLES),
     validateRequest(foodIdZodSchema, "params"),
     FoodController.getFoodById,
 );
 
 router.post(
     "/",
-    checkAuth(...ALL_ROLES),
+    checkAuth(...SETTINGS_ROLES),
     validateRequest(createFoodZodSchema),
     FoodController.createFood,
 );
 
 router.patch(
     "/:id",
-    checkAuth(...ALL_ROLES),
+    checkAuth(...SETTINGS_ROLES),
     validateRequest(foodIdZodSchema, "params"),
     validateRequest(updateFoodZodSchema),
     FoodController.updateFood,
@@ -45,7 +45,7 @@ router.patch(
 
 router.delete(
     "/:id",
-    checkAuth(...ALL_ROLES),
+    checkAuth(...SETTINGS_ROLES),
     validateRequest(foodIdZodSchema, "params"),
     FoodController.deleteFood,
 );

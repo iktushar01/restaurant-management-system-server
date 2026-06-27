@@ -60,6 +60,8 @@ router.get("/google/success", AuthController.googleLoginSuccess);
 router.get("/oauth/code", AuthController.exchangeOAuthCode);
 router.get("/oauth/error", AuthController.handleOAuthError);
 
+router.get("/demo-users", AuthController.getDemoUsers);
+
 // ─── Authenticated routes (all roles) ────────────────────────────────────────
 
 const allRoles = ALL_ROLES;

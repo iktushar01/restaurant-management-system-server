@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { ALL_ROLES } from "../../constants/roles";
+import { FINANCE_ROLES } from "../../constants/roles";
 import { checkAuth } from "../../middleware/checkAuth";
 import { validateRequest } from "../../middleware/validateRequest";
 import * as C from "./finance.controller";
@@ -13,7 +13,7 @@ import {
 } from "./finance.validation";
 
 const router = Router();
-const auth = checkAuth(...ALL_ROLES);
+const auth = checkAuth(...FINANCE_ROLES);
 const v = (schema: Parameters<typeof validateRequest>[0], src: "body" | "query" | "params" = "body") =>
     validateRequest(schema, src);
 

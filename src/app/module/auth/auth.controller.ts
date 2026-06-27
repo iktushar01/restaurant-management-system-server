@@ -9,6 +9,7 @@ import { auth } from "../../lib/auth";
 import AppError from "../../errorHelpers/AppError";
 import { IRequestUser } from "./auth.interface";
 import { AuthService } from "./auth.service";
+import { getDemoUsersForClient } from "../../constants/demoUsers";
 import ms, { StringValue } from "ms";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -342,11 +343,21 @@ const exchangeOAuthCode = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const getDemoUsers = catchAsync(async (_req: Request, res: Response) => {
+    sendResponse(res, {
+        statusCode: StatusCodes.OK,
+        success: true,
+        message: "Demo users retrieved successfully",
+        data: getDemoUsersForClient(),
+    });
+});
+
 // ─── Exports ──────────────────────────────────────────────────────────────────
 
 export const AuthController = {
     registerStudent,
     loginUser,
+    getDemoUsers,
     getMe,
     updateProfile,
     getNewTokens,

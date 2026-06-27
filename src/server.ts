@@ -1,6 +1,6 @@
 import app from "./app";
 import { envVars } from "./config/env";
-import { seedSuperAdmin } from "./app/utils/seed";
+import { seedDemoUsers } from "./app/utils/seedDemoUsers";
 
 // Load .env only in development
 if (process.env.NODE_ENV !== "production") {
@@ -17,10 +17,9 @@ const bootstrap = async () => {
       `✅ Server running on ${process.env.NODE_ENV || envVars.NODE_ENV} mode at http://localhost:${port}`
     );
 
-    // Seed super admin (errors won't break server)
-    seedSuperAdmin().catch((error) => {
+    seedDemoUsers().catch((error) => {
       console.error(
-        "Super admin seed skipped due to startup error:",
+        "Demo users seed skipped due to startup error:",
         error
       );
     });
