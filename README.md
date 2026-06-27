@@ -84,6 +84,27 @@ npm run build
 npm run start
 ```
 
+## Deploy on Render
+
+1. **Root Directory**: leave empty (use the repo root). Do **not** set it to `src`, or paths will break (`src/src/...`).
+
+2. **Build Command**:
+   ```bash
+   npm install && npx prisma migrate deploy
+   ```
+
+3. **Start Command**:
+   ```bash
+   npm start
+   ```
+   Do **not** use `node src/server.ts` — Node cannot run TypeScript directly.
+
+4. Add all environment variables from `.env` in the Render dashboard (`DATABASE_URL`, `BETTER_AUTH_SECRET`, etc.).
+
+5. Set `NODE_ENV=production`.
+
+> **Note:** `src/app.ts` was renamed to `src/expressApp.ts` to avoid a naming conflict with the `src/app/` folder, which caused `ERR_UNSUPPORTED_DIR_IMPORT` under Node ESM.
+
 ## API Modules
 
 - `/api/v1/auth`
