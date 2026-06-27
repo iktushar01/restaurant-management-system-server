@@ -38,6 +38,26 @@ enum WorkPeriodStatus {
   CLOSED
 }
 
+enum PurchaseStatus {
+  PENDING
+  PAID
+  PARTIAL
+  CANCELLED
+}
+
+enum StockMovementType {
+  STOCK_IN
+  STOCK_OUT
+  MOVE
+}
+
+enum EventStatus {
+  BOOKED
+  CONFIRMED
+  RESOLVED
+  CANCELLED
+}
+
 enum UserStatus {
   ACTIVE
   INACTIVE

@@ -30,3 +30,13 @@ export type OrderType = (typeof OrderType)[keyof typeof OrderType];
 export const WorkPeriodStatus = prismaModule.WorkPeriodStatus;
 export type WorkPeriodStatus =
     (typeof WorkPeriodStatus)[keyof typeof WorkPeriodStatus];
+
+export const PurchaseStatus = prismaModule.PurchaseStatus;
+export type PurchaseStatus = (typeof PurchaseStatus)[keyof typeof PurchaseStatus];
+
+export const StockMovementType = prismaModule.StockMovementType;
+export type StockMovementType =
+    (typeof StockMovementType)[keyof typeof StockMovementType];
+
+export const EventStatus = prismaModule.EventStatus;
+export type EventStatus = (typeof EventStatus)[keyof typeof EventStatus];

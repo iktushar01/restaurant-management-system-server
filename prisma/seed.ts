@@ -72,6 +72,7 @@ async function main() {
     }
 
     await seedDineAndWaiters();
+    await seedInventoryAndEvents();
 }
 
 async function seedDineAndWaiters() {
@@ -137,6 +138,88 @@ async function seedDineAndWaiters() {
     });
 
     console.log("Dine locations, tables, waiters, and work period seeded.");
+}
+
+async function seedInventoryAndEvents() {
+    const existing = await prisma.inventoryCategory.count();
+    if (existing > 0) {
+        console.log("Inventory seed skipped — already exists.");
+        return;
+    }
+
+    const rawMaterials = await prisma.inventoryCategory.create({
+        data: { name: "Raw Materials", details: "nice" },
+    });
+    const rice = await prisma.inventoryCategory.create({
+        data: { name: "RICE", details: "FEFW" },
+    });
+
+    const meat = await prisma.inventorySubCategory.create({
+        data: { categoryId: rawMaterials.id, name: "Meat" },
+    });
+    const fish = await prisma.inventorySubCategory.create({
+        data: { categoryId: rawMaterials.id, name: "Fish" },
+    });
+
+    const kg = await prisma.unit.create({ data: { name: "KG" } });
+    await prisma.unit.createMany({
+        data: [{ name: "LITRE" }, { name: "PIECE" }, { name: "DOZEN" }],
+    });
+
+    const mainStore = await prisma.stockLocation.create({ data: { name: "Main Store" } });
+    const kitchen = await prisma.stockLocation.create({ data: { name: "Kitchen" } });
+
+    await prisma.vendor.create({
+        data: { name: "Sakura Shop", address: "Dhaka", contact: "01111111111", openingBalance: 0 },
+    });
+
+    const items = [
+        { name: "Chicken", subCategoryId: meat.id, reorderLevel: 5 },
+        { name: "Beef", subCategoryId: meat.id, reorderLevel: 3 },
+        { name: "Rupcanda Fish", subCategoryId: fish.id, reorderLevel: 2 },
+    ];
+
+    for (const item of items) {
+        const created = await prisma.inventoryItem.create({
+            data: {
+                categoryId: rawMaterials.id,
+                subCategoryId: item.subCategoryId,
+                unitId: kg.id,
+                name: item.name,
+                reorderLevel: item.reorderLevel,
+            },
+        });
+        await prisma.stock.create({
+            data: { itemId: created.id, locationId: mainStore.id, quantity: 20 },
+        });
+    }
+
+    await prisma.event.createMany({
+        data: [
+            {
+                subject: "Birthday Party",
+                customerName: "Yasin",
+                phone: "87568732465",
+                date: new Date("2025-08-15"),
+                noOfPerson: 12,
+                advanceAmount: 100,
+                menu: "Set Menu A",
+                description: "Birthday celebration",
+            },
+            {
+                subject: "Corporate Dinner",
+                customerName: "Tushar",
+                phone: "2342342234",
+                date: new Date("2025-09-04"),
+                noOfPerson: 24,
+                advanceAmount: 5000,
+                menu: "Buffet",
+                description: "Company event",
+            },
+        ],
+    });
+
+    console.log("Inventory and events seeded.");
 }
 
 main()
