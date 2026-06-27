@@ -14,17 +14,19 @@ export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus];
 export const Gender = prismaModule.Gender;
 export type Gender = (typeof Gender)[keyof typeof Gender];
 
-export const ClassroomStatus = prismaModule.ClassroomStatus;
-export type ClassroomStatus =
-  (typeof ClassroomStatus)[keyof typeof ClassroomStatus];
+export const Availability = prismaModule.Availability;
+export type Availability = (typeof Availability)[keyof typeof Availability];
 
-export const MembershipRole = prismaModule.MembershipRole;
-export type MembershipRole =
-  (typeof MembershipRole)[keyof typeof MembershipRole];
+export const DineTableStatus = prismaModule.DineTableStatus;
+export type DineTableStatus =
+    (typeof DineTableStatus)[keyof typeof DineTableStatus];
 
-export const NoteStatus = prismaModule.NoteStatus;
-export type NoteStatus = (typeof NoteStatus)[keyof typeof NoteStatus];
+export const OrderStatus = prismaModule.OrderStatus;
+export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];
 
-export const InstitutionLevel = prismaModule.InstitutionLevel;
-export type InstitutionLevel =
-  (typeof InstitutionLevel)[keyof typeof InstitutionLevel];
+export const OrderType = prismaModule.OrderType;
+export type OrderType = (typeof OrderType)[keyof typeof OrderType];
+
+export const WorkPeriodStatus = prismaModule.WorkPeriodStatus;
+export type WorkPeriodStatus =
+    (typeof WorkPeriodStatus)[keyof typeof WorkPeriodStatus];

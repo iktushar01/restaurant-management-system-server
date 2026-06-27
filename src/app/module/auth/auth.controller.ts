@@ -58,7 +58,7 @@ const registerStudent = catchAsync(async (req: Request, res: Response) => {
         message: "Student registered successfully",
         data: {
             user: result.user,
-            student: result.student,
+            normalUser: result.normalUser,
             accessToken: result.accessToken,
             refreshToken: result.refreshToken,
             token: result.token,

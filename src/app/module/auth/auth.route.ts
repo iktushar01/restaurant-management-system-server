@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Role } from "../../lib/prisma-exports";
+import { ALL_ROLES } from "../../constants/roles";
 import { checkAuth } from "../../middleware/checkAuth";
 import { validateRequest } from "../../middleware/validateRequest";
 import { memoryUpload } from "../../../config/multer.config";
@@ -62,7 +62,7 @@ router.get("/oauth/error", AuthController.handleOAuthError);
 
 // ─── Authenticated routes (all roles) ────────────────────────────────────────
 
-const allRoles = [Role.STUDENT, Role.ADMIN, Role.SUPER_ADMIN] as const;
+const allRoles = ALL_ROLES;
 
 router.get("/me", checkAuth(...allRoles), AuthController.getMe);
 

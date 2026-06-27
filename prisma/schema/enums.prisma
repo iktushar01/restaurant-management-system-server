@@ -1,7 +1,41 @@
 enum Role {
-  STUDENT
+  STAFF
+  WAITER
+  MANAGER
+  CASHIER
   ADMIN
   SUPER_ADMIN
+}
+
+enum Availability {
+  AVAILABLE
+  UNAVAILABLE
+}
+
+enum DineTableStatus {
+  AVAILABLE
+  OCCUPIED
+  RESERVED
+}
+
+enum OrderStatus {
+  PENDING
+  PREPARING
+  READY
+  SERVED
+  COMPLETED
+  CANCELLED
+}
+
+enum OrderType {
+  DINE_IN
+  TAKEAWAY
+  DELIVERY
+}
+
+enum WorkPeriodStatus {
+  OPEN
+  CLOSED
 }
 
 enum UserStatus {

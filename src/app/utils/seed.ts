@@ -47,6 +47,7 @@ export const seedSuperAdmin = async () => {
                 },
                 data: {
                     emailVerified: true,
+                    role: Role.SUPER_ADMIN,
                 }
             });
 

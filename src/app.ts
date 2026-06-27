@@ -30,7 +30,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Acadex Server is running 🚀");
+  res.send("DineFlow Server is running");
 });
 
 

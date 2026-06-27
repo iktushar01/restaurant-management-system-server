@@ -15,7 +15,7 @@ export const auth = betterAuth({
     }),
     emailAndPassword: {
         enabled: true,
-        requireEmailVerification: true,
+        requireEmailVerification: envVars.NODE_ENV === "production",
     },
     socialProviders: {
         google: {
@@ -23,7 +23,7 @@ export const auth = betterAuth({
             clientSecret: envVars.GOOGLE_CLIENT_SECRET,
             mapProfileToUser: (profile: any) => {
                 return {
-                    role: Role.STUDENT,
+                    role: Role.STAFF,
                     needPasswordChange: false,
                     emailVerified: true,
                     isDeleted: false,
@@ -43,13 +43,13 @@ export const auth = betterAuth({
 
     
     emailVerification:{
-        sendOnSignUp: true,
-        sendOnSignIn: true,
+        sendOnSignUp: envVars.NODE_ENV === "production",
+        sendOnSignIn: false,
         autoSignInAfterVerification: true,
     },
     user: {
         additionalFields: {
-            role: { type: "string", required: true, defaultValue: Role.STUDENT },
+            role: { type: "string", required: true, defaultValue: Role.STAFF },
             status: { type: "string", required: true, defaultValue: UserStatus.ACTIVE },
             needPasswordChange: { type: "boolean", required: true, defaultValue: false },
             isDeleted: { type: "boolean", required: true, defaultValue: false },

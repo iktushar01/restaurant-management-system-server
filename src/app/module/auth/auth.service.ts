@@ -87,9 +87,9 @@ const registerStudent = async (payload: IRegisterStudent, fileBuffer?: Buffer, f
     }
 
     try {
-        // Create the student profile and update the user's image URL in a single transaction
-        const [student] = await prisma.$transaction(async (tx) => {
-            const createdStudent = await tx.student.create({
+        // Create the staff profile and update the user's image URL in a single transaction
+        const [normalUser] = await prisma.$transaction(async (tx) => {
+            const createdNormalUser = await tx.normalUser.create({
                 data: {
                     userId: authData.user.id,
                     name,
@@ -109,7 +109,7 @@ const registerStudent = async (payload: IRegisterStudent, fileBuffer?: Buffer, f
                 authData.user.image = imageUrl;
             }
 
-            return [createdStudent];
+            return [createdNormalUser];
         });
 
         const { accessToken, refreshToken } = buildTokenPair({
@@ -124,7 +124,7 @@ const registerStudent = async (payload: IRegisterStudent, fileBuffer?: Buffer, f
 
         return {
             user: authData.user,
-            student,
+            normalUser,
             token: authData.token,
             accessToken,
             refreshToken,
@@ -202,7 +202,7 @@ const fetchCurrentUserById = async (userId: string) => {
     const dbUser = await prisma.user.findUnique({
         where: { id: userId },
         include: {
-            student: true,
+            normalUser: true,
             admin: true,
         },
     });
@@ -236,7 +236,7 @@ const updateProfile = async (payload: IUpdateProfilePayload) => {
         select: {
             id: true,
             role: true,
-            student: { select: { id: true } },
+            normalUser: { select: { id: true } },
             admin: { select: { id: true } },
         },
     });
@@ -271,29 +271,29 @@ const updateProfile = async (payload: IUpdateProfilePayload) => {
             });
         }
 
-        if (role === Role.STUDENT && dbUser.student) {
-            const studentUpdateData: Prisma.StudentUpdateInput = {};
+        if (role === Role.STAFF && dbUser.normalUser) {
+            const normalUserUpdateData: Prisma.NormalUserUpdateInput = {};
 
             if (name !== undefined) {
-                studentUpdateData.name = name;
+                normalUserUpdateData.name = name;
             }
             if (finalProfilePhoto !== undefined) {
-                studentUpdateData.profilePhoto = finalProfilePhoto;
+                normalUserUpdateData.profilePhoto = finalProfilePhoto;
             }
             if (contactNumber !== undefined) {
-                studentUpdateData.contactNumber = contactNumber;
+                normalUserUpdateData.contactNumber = contactNumber;
             }
             if (address !== undefined) {
-                studentUpdateData.address = address;
+                normalUserUpdateData.address = address;
             }
             if (gender !== undefined) {
-                studentUpdateData.gender = gender;
+                normalUserUpdateData.gender = gender;
             }
 
-            if (Object.keys(studentUpdateData).length > 0) {
-                await tx.student.update({
+            if (Object.keys(normalUserUpdateData).length > 0) {
+                await tx.normalUser.update({
                     where: { userId },
-                    data: studentUpdateData,
+                    data: normalUserUpdateData,
                 });
             }
         }
@@ -505,13 +505,13 @@ const googleLoginSuccess = async (session: {
 }) => {
     const { user } = session;
 
-    // Lazily create the student profile if this is the first Google sign-in
-    const studentExists = await prisma.student.findUnique({
+    // Lazily create the staff profile if this is the first Google sign-in
+    const normalUserExists = await prisma.normalUser.findUnique({
         where: { userId: user.id },
     });
 
-    if (!studentExists) {
-        await prisma.student.create({
+    if (!normalUserExists) {
+        await prisma.normalUser.create({
             data: {
                 userId: user.id,
                 name: user.name,
