@@ -8,7 +8,7 @@
   "main": "src/server.ts",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "start": "tsx src/server.ts",
+    "start": "node scripts/render-start.js",
     "render-build": "npm install",
     "build": "prisma generate",
     "build:compile": "prisma generate && tsc && node scripts/copy-generated-prisma.js && node scripts/copy-templates.js && node scripts/fix-imports.js",
