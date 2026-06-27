@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { SETTINGS_ROLES } from "../../constants/roles";
+import { REFERENCE_READ_ROLES, SETTINGS_ROLES } from "../../constants/roles";
 import { checkAuth } from "../../middleware/checkAuth";
 import { validateRequest } from "../../middleware/validateRequest";
 import { FoodCategoryController } from "./foodCategory.controller";
@@ -14,20 +14,20 @@ const router = Router();
 
 router.get(
     "/",
-    checkAuth(...SETTINGS_ROLES),
+    checkAuth(...REFERENCE_READ_ROLES),
     validateRequest(listFoodCategoryQuerySchema, "query"),
     FoodCategoryController.listFoodCategories,
 );
 
 router.get(
     "/all",
-    checkAuth(...SETTINGS_ROLES),
+    checkAuth(...REFERENCE_READ_ROLES),
     FoodCategoryController.getAllFoodCategories,
 );
 
 router.get(
     "/:id",
-    checkAuth(...SETTINGS_ROLES),
+    checkAuth(...REFERENCE_READ_ROLES),
     validateRequest(foodCategoryIdZodSchema, "params"),
     FoodCategoryController.getFoodCategoryById,
 );

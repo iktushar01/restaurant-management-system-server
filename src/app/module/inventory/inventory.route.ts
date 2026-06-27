@@ -62,24 +62,24 @@ router.delete("/units/:id", settingsAuth, v(idParamSchema, "params"), C.deleteUn
 
 // Vendors
 router.get("/vendors/due-purchases", inventoryAuth, C.getVendorsWithDuePurchases);
-router.get("/vendors", settingsAuth, v(listQuerySchema, "query"), C.listVendors);
+router.get("/vendors", inventoryAuth, v(listQuerySchema, "query"), C.listVendors);
 router.post("/vendors", settingsAuth, v(createVendorSchema), C.createVendor);
-router.get("/vendors/:id", settingsAuth, v(idParamSchema, "params"), C.getVendorById);
+router.get("/vendors/:id", inventoryAuth, v(idParamSchema, "params"), C.getVendorById);
 router.patch("/vendors/:id", settingsAuth, v(idParamSchema, "params"), v(createVendorSchema.partial()), C.updateVendor);
 router.delete("/vendors/:id", settingsAuth, v(idParamSchema, "params"), C.deleteVendor);
 
 // Stock Locations
-router.get("/stock-locations", settingsAuth, v(listQuerySchema, "query"), C.listStockLocations);
+router.get("/stock-locations", inventoryAuth, v(listQuerySchema, "query"), C.listStockLocations);
 router.post("/stock-locations", settingsAuth, v(createStockLocationSchema), C.createStockLocation);
-router.get("/stock-locations/:id", settingsAuth, v(idParamSchema, "params"), C.getStockLocationById);
+router.get("/stock-locations/:id", inventoryAuth, v(idParamSchema, "params"), C.getStockLocationById);
 router.patch("/stock-locations/:id", settingsAuth, v(idParamSchema, "params"), v(createStockLocationSchema.partial()), C.updateStockLocation);
 router.delete("/stock-locations/:id", settingsAuth, v(idParamSchema, "params"), C.deleteStockLocation);
 
 // Inventory Items
-router.get("/items", settingsAuth, v(listQuerySchema, "query"), C.listItems);
+router.get("/items", inventoryAuth, v(listQuerySchema, "query"), C.listItems);
 router.get("/items/all", inventoryAuth, C.getAllItems);
 router.post("/items", settingsAuth, v(createInventoryItemSchema), C.createItem);
-router.get("/items/:id", settingsAuth, v(idParamSchema, "params"), C.getItemById);
+router.get("/items/:id", inventoryAuth, v(idParamSchema, "params"), C.getItemById);
 router.patch("/items/:id", settingsAuth, v(idParamSchema, "params"), v(createInventoryItemSchema.partial()), C.updateItem);
 router.delete("/items/:id", settingsAuth, v(idParamSchema, "params"), C.deleteItem);
 

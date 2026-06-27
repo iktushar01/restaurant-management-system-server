@@ -53,3 +53,6 @@ export const SETTINGS_ROLES = [
     Role.ADMIN,
     Role.SUPER_ADMIN,
 ] as const;
+
+/** Read-only reference data used by orders, dashboard, and shared UI */
+export const REFERENCE_READ_ROLES = ALL_ROLES;
