@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "start": "tsx src/server.ts",
+    "render-build": "npm install",
     "build": "prisma generate",
     "build:compile": "prisma generate && tsc && node scripts/copy-generated-prisma.js && node scripts/copy-templates.js && node scripts/fix-imports.js",
     "postinstall": "prisma generate",

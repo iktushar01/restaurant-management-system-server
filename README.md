@@ -112,20 +112,19 @@ Minimum production values:
 
 Copy the rest from your local `.env` (secrets, email, Cloudinary, etc.).
 
-### Step 3 — Render service settings
+### Step 3 — Render service settings (copy exactly)
 
 | Setting | Value |
 |---------|--------|
 | **Root Directory** | *(leave completely empty)* |
-| **Build Command** | `npm install` |
+| **Build Command** | `npm run render-build` |
 | **Pre-Deploy Command** | `npm run db:deploy` |
 | **Start Command** | `npm start` |
 
-Do **not** use:
-- `npm install && npx prisma migrate deploy` as Build Command (migrations belong in Pre-Deploy)
-- `node src/server.ts` as Start Command
+**Remove** `npx prisma migrate deploy` from the Build Command.  
+Your current build command `npm install && npx prisma migrate deploy` will always fail until `DATABASE_URL` is set — and migrations should run in **Pre-Deploy**, not Build.
 
-**You must add `DATABASE_URL` in Environment before deploy.** Without it, Pre-Deploy migrations and the running app will fail.
+Do **not** use `node src/server.ts` as Start Command.
 
 ### Step 4 — Redeploy
 
