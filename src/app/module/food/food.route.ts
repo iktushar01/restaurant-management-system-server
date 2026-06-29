@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { memoryUpload } from "../../../config/multer.config";
 import { REFERENCE_READ_ROLES, SETTINGS_ROLES } from "../../constants/roles";
 import { checkAuth } from "../../middleware/checkAuth";
 import { validateRequest } from "../../middleware/validateRequest";
@@ -31,6 +32,7 @@ router.get(
 router.post(
     "/",
     checkAuth(...SETTINGS_ROLES),
+    memoryUpload.single("image"),
     validateRequest(createFoodZodSchema),
     FoodController.createFood,
 );
@@ -38,6 +40,7 @@ router.post(
 router.patch(
     "/:id",
     checkAuth(...SETTINGS_ROLES),
+    memoryUpload.single("image"),
     validateRequest(foodIdZodSchema, "params"),
     validateRequest(updateFoodZodSchema),
     FoodController.updateFood,

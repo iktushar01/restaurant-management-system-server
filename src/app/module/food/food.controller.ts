@@ -28,7 +28,7 @@ const getAllFoods = catchAsync(async (_req: Request, res: Response) => {
 });
 
 const getFoodById = catchAsync(async (req: Request, res: Response) => {
-    const result = await FoodService.getFoodById(req.params.id);
+    const result = await FoodService.getFoodById(req.params.id as string);
 
     sendResponse(res, {
         statusCode: StatusCodes.OK,
@@ -39,7 +39,9 @@ const getFoodById = catchAsync(async (req: Request, res: Response) => {
 });
 
 const createFood = catchAsync(async (req: Request, res: Response) => {
-    const result = await FoodService.createFood(req.body);
+    const fileBuffer = (req as any).file?.buffer;
+    const fileName = (req as any).file?.originalname;
+    const result = await FoodService.createFood(req.body, fileBuffer, fileName);
 
     sendResponse(res, {
         statusCode: StatusCodes.CREATED,
@@ -50,7 +52,9 @@ const createFood = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateFood = catchAsync(async (req: Request, res: Response) => {
-    const result = await FoodService.updateFood(req.params.id, req.body);
+    const fileBuffer = (req as any).file?.buffer;
+    const fileName = (req as any).file?.originalname;
+    const result = await FoodService.updateFood(req.params.id as string, req.body, fileBuffer, fileName);
 
     sendResponse(res, {
         statusCode: StatusCodes.OK,
@@ -61,7 +65,7 @@ const updateFood = catchAsync(async (req: Request, res: Response) => {
 });
 
 const deleteFood = catchAsync(async (req: Request, res: Response) => {
-    await FoodService.deleteFood(req.params.id);
+    await FoodService.deleteFood(req.params.id as string);
 
     sendResponse(res, {
         statusCode: StatusCodes.OK,

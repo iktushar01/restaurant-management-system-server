@@ -2,6 +2,7 @@ import AppError from "../../errorHelpers/AppError";
 import { prisma } from "../../lib/prisma";
 import { StatusCodes } from "http-status-codes";
 import { Availability } from "../../lib/prisma-exports";
+import { deleteFileFromCloudinary, uploadFileToCloudinary } from "../../../config/cloudinary.config";
 
 interface IListFoods {
     search?: string;
@@ -54,6 +55,15 @@ const formatFood = (food: {
     quantity: Number(food.price),
     image: food.image,
 });
+
+const uploadFoodImage = async (fileBuffer?: Buffer, fileName?: string) => {
+    if (!fileBuffer || !fileName) {
+        return undefined;
+    }
+
+    const result = await uploadFileToCloudinary(fileBuffer, fileName);
+    return result.secure_url;
+};
 
 const listFoods = async (query: IListFoods) => {
     const page = Number(query.page) || 1;
@@ -123,7 +133,7 @@ const getFoodById = async (id: string) => {
     return formatFood(food);
 };
 
-const createFood = async (payload: ICreateFood) => {
+const createFood = async (payload: ICreateFood, fileBuffer?: Buffer, fileName?: string) => {
     const category = await prisma.foodCategory.findFirst({
         where: { id: payload.categoryId, isDeleted: false },
     });
@@ -131,6 +141,8 @@ const createFood = async (payload: ICreateFood) => {
     if (!category) {
         throw new AppError(StatusCodes.BAD_REQUEST, "Food category not found");
     }
+
+    const uploadedImage = await uploadFoodImage(fileBuffer, fileName);
 
     const food = await prisma.food.create({
         data: {
@@ -140,7 +152,7 @@ const createFood = async (payload: ICreateFood) => {
             serialNo: payload.serialNo,
             availability: payload.availability ?? Availability.AVAILABLE,
             price: payload.price,
-            image: payload.image || null,
+            image: uploadedImage ?? (payload.image || null),
         },
         include: { category: { select: { name: true } } },
     });
@@ -148,8 +160,8 @@ const createFood = async (payload: ICreateFood) => {
     return formatFood(food);
 };
 
-const updateFood = async (id: string, payload: IUpdateFood) => {
-    await getFoodById(id);
+const updateFood = async (id: string, payload: IUpdateFood, fileBuffer?: Buffer, fileName?: string) => {
+    const existingFood = await getFoodById(id);
 
     if (payload.categoryId) {
         const category = await prisma.foodCategory.findFirst({
@@ -161,14 +173,21 @@ const updateFood = async (id: string, payload: IUpdateFood) => {
         }
     }
 
+    const uploadedImage = await uploadFoodImage(fileBuffer, fileName);
+    const nextImage = uploadedImage ?? (payload.image === "" ? null : payload.image);
+
     const food = await prisma.food.update({
         where: { id },
         data: {
             ...payload,
-            image: payload.image === "" ? null : payload.image,
+            ...(nextImage !== undefined ? { image: nextImage } : {}),
         },
         include: { category: { select: { name: true } } },
     });
+
+    if (uploadedImage && existingFood.image) {
+        await deleteFileFromCloudinary(existingFood.image, "image").catch(() => {});
+    }
 
     return formatFood(food);
 };
